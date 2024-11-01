@@ -72,18 +72,21 @@ const Weather = () => {
     fetchWeather("https://api.open-meteo.com/v1/forecast?", params);
   };
 
-  const screenWidth = Dimensions.get("window").width;
+  const data_graph = [80, 10, 95, 48, 24, 67, 51, 12, 33, 0, 24, 20, 50];
 
-  const createChartData = (values: number[], label: string) => {
-    return values.slice(0, 5).map((value, index) => ({
-      value,
-      label: data?.hourly.time[index].substring(11, 16) || "",
-    }));
-  };
 
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <View style={styles.container}>
+      <LineChart
+            style={{ height: 200 }}
+            gridMin={-20}
+            gridMax={120}
+            data={data_graph}
+            svg={{ stroke: 'rgb(134, 65, 244)' }}
+            contentInset={{ top: 20, bottom: 20 }}>
+            <Grid />
+        </LineChart>
         <TextInput
           style={styles.input}
           placeholder="Enter Latitude"
@@ -116,48 +119,47 @@ const Weather = () => {
         </View>
 
         {data && (
-          <>
+          <View style={styles.dataRow}>
             {showTemperature && (
-              <LineChart
-                data={createChartData(data.hourly.temperature_2m, 'Temperature')}
-                width={screenWidth - 40}
-                height={150}
-                
-                color="#ff6347"
-                thickness={2}
-                initialSpacing={0}
-              />
+              <View style={styles.dataColumn}>
+                <Text style={styles.text}>Temperature (°C)</Text>
+                {data.hourly.temperature_2m.map((temp, index) => (
+                  <Text key={index} style={styles.text}>
+                    {data.hourly.time[index]}: {temp}°C
+                  </Text>
+                ))}
+              </View>
             )}
 
             {showHumidity && (
-              <LineChart
-                data={createChartData(data.hourly.relative_humidity_2m, 'Humidity')}
-                width={screenWidth - 40}
-                height={150}
-                hideDataPoints
-                color="#1e90ff"
-                thickness={2}
-                initialSpacing={0}
-              />
+              <View style={styles.dataColumn}>
+                <Text style={styles.text}>Humidity (%)</Text>
+                {data.hourly.relative_humidity_2m.map((humidity, index) => (
+                  <Text key={index} style={styles.text}>
+                    {data.hourly.time[index]}: {humidity}%
+                  </Text>
+                ))}
+              </View>
             )}
 
             {showDewpoint && (
-              <LineChart
-                data={createChartData(data.hourly.dewpoint_2m, 'Dewpoint')}
-                width={screenWidth - 40}
-                height={150}
-                hideDataPoints
-                color="#32cd32"
-                thickness={2}
-                initialSpacing={0}
-              />
+              <View style={styles.dataColumn}>
+                <Text style={styles.text}>Dewpoint (°C)</Text>
+                {data.hourly.dewpoint_2m.map((dewpoint, index) => (
+                  <Text key={index} style={styles.text}>
+                    {data.hourly.time[index]}: {dewpoint}°C
+                  </Text>
+                ))}
+              </View>
             )}
-          </>
+          </View>
         )}
       </View>
     </ScrollView>
   );
 };
+
+const screenWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   container: {
@@ -185,11 +187,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 10,
-    
   },
-  chart: {
-    marginVertical: 8,
-    borderRadius: 8,
+  dataRow: {
+    flexDirection: screenWidth < 600 ? 'column' : 'row',
+    justifyContent: 'space-around',
+    marginTop: 15,
+  },
+  dataColumn: {
+    alignItems: 'center',
+    marginHorizontal: 20,
   },
 });
 
