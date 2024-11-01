@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet, TextInput, ScrollView, Switch, Dimensions } from 'react-native';
-import { LineChart } from 'react-native-gifted-charts';
-
+import { View, Text, Button, StyleSheet, TextInput, ScrollView, Switch ,Dimensions} from 'react-native';
+import { LineChart, Grid } from 'react-native-svg-charts'
 type WeatherParams = {
   latitude: number;
   longitude: number;
@@ -186,6 +185,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 10,
+    
   },
   chart: {
     marginVertical: 8,
