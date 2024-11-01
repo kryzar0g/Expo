@@ -122,7 +122,7 @@ const Weather = () => {
                 data={createChartData(data.hourly.temperature_2m, 'Temperature')}
                 width={screenWidth - 40}
                 height={150}
-                hideDataPoints
+                
                 color="#ff6347"
                 thickness={2}
                 initialSpacing={0}
