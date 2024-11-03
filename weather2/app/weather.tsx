@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet, TextInput, ScrollView, Switch ,Dimensions} from 'react-native';
-import { LineChart, Grid } from 'react-native-svg-charts'
+import { LineChart } from 'react-native-chart-kit';
+
+
 type WeatherParams = {
   latitude: number;
   longitude: number;
@@ -39,6 +41,7 @@ const Weather = () => {
   const [latitude, setLatitude] = useState<string>('');
   const [longitude, setLongitude] = useState<string>('');
   const [data, setData] = useState<WeatherAPI | null>(null);
+  const [chartData, setChartData] = useState({});
   const [showTemperature, setShowTemperature] = useState<boolean>(true);
   const [showHumidity, setShowHumidity] = useState<boolean>(true);
   const [showDewpoint, setShowDewpoint] = useState<boolean>(true);
@@ -72,21 +75,48 @@ const Weather = () => {
     fetchWeather("https://api.open-meteo.com/v1/forecast?", params);
   };
 
-  const data_graph = [80, 10, 95, 48, 24, 67, 51, 12, 33, 0, 24, 20, 50];
+  //const data_graph = [80, 10, 95, 48, 24, 67, 51, 12, 33, 0, 24, 20, 50];
 
 
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <View style={styles.container}>
-      <LineChart
-            style={{ height: 200 }}
-            gridMin={-20}
-            gridMax={120}
-            data={data_graph}
-            svg={{ stroke: 'rgb(134, 65, 244)' }}
-            contentInset={{ top: 20, bottom: 20 }}>
-            <Grid />
-        </LineChart>
+        <LineChart
+        data={{
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          datasets: [
+            {
+              data: [20, 45, 28, 80, 99, 43],
+            },
+          ],
+        }}
+        width={screenWidth - 40} 
+        height={220}
+        yAxisLabel=""
+        yAxisSuffix="°C"
+        chartConfig={{
+          backgroundColor: '#808080',
+          backgroundGradientFrom: '#808080',
+          backgroundGradientTo: '#808080',
+          decimalPlaces: 2,
+          color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+          labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+          style: {
+            borderRadius: 16,
+          },
+          propsForDots: {
+            r: '3',
+            strokeWidth: '2',
+            stroke: '#ffa726',
+          },
+        }}
+        bezier
+        style={{
+          marginVertical: 8,
+          borderRadius: 16,
+        }}
+      />
+        
         <TextInput
           style={styles.input}
           placeholder="Enter Latitude"
@@ -101,7 +131,11 @@ const Weather = () => {
           onChangeText={setLongitude}
           keyboardType="numeric"
         />
-        <Button onPress={handleFetchWeather} title="Press" />
+        <Button 
+        onPress={handleFetchWeather} 
+        title="Press" 
+        />
+        
 
         <View style={styles.switchContainer}>
           <Text style={styles.text}>Show Temperature</Text>
@@ -166,19 +200,28 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#ffffff',
+    backgroundColor: '#808080',
     padding: 20,
   },
   text: {
-    color: '#000000',
+    color: '#ffffff',
   },
   input: {
     height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
+    borderColor: 'white',
+    borderWidth: 2,
     marginBottom: 10,
     paddingHorizontal: 10,
+    borderRadius: 5,
     width: '80%',
+    backgroundColor: '#000000', // Change background color to white
+    color: '#ffffff', // Change text color to black
+    
+  },
+  button: {
+    backgroundColor: 'white',
+    color: 'black',
+
   },
   scrollViewContent: {
     flexGrow: 1,
