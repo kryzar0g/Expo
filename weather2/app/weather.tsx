@@ -49,7 +49,7 @@ const Weather = () => {
   const [humidityData,setHumidityData]=useState<number[]>([]);
   const [dewpointData,setDewPointData]=useState<number[]>([]);
   const [timeLabels,setTimeLabels]=useState<string[]>([]);
-  const [date, setDate] = useState(new Date());
+  //const [date, setDate] = useState(new Date());
   const [city, setCity] = useState('');
   const [search, setSearch] = useState<boolean>(true);
 

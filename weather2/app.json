@@ -27,7 +27,8 @@
       },
       "permissions": [
         "INTERNET"
-      ]
+      ],
+      "package": "zaruba.weather"
     },
     "web": {
       "bundler": "metro",
