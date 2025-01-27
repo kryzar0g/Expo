@@ -25,24 +25,22 @@ export default function App() {
     temp: { labels: [], data: [] },
     humidity: { labels: [], data: [] },
   });
-
   const saveDataToStorage = async (key, value) => {
     try {
       const existingData = await AsyncStorage.getItem(key);
       const parsedData = existingData ? JSON.parse(existingData) : [];
       parsedData.push({ timestamp: new Date().toISOString(), value });
-      await AsyncStorage.setItem(key, JSON.stringify(parsedData.slice(-100))); // Keep the last 100 entries
+      await AsyncStorage.setItem(key, JSON.stringify(parsedData.slice(-100))); 
     } catch (error) {
       console.error('Error saving data:', error);
     }
   };
-
   const addToChartData = (key, value) => {
     if (!isNaN(value)) {
       setChartData((prev) => {
         const timestamp = new Date().toLocaleTimeString();
         const newLabels = [...prev[key].labels, timestamp].slice(-10);
-        const newData = [...prev[key].data, parseFloat(value)].slice(-10); // Ensure numeric
+        const newData = [...prev[key].data, parseFloat(value)].slice(-10); 
         return { ...prev, [key]: { labels: newLabels, data: newData } };
       });
     } else {
@@ -88,7 +86,6 @@ export default function App() {
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
       const url = window.URL.createObjectURL(blob);
   
-      // Create a link element and trigger download
       const link = document.createElement('a');
       link.href = url;
       link.setAttribute('download', 'sensor_data.csv');
