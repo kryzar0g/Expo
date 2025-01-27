@@ -92,7 +92,6 @@ export default function App() {
       document.body.appendChild(link);
       link.click();
   
-      // Clean up
       link.parentNode.removeChild(link);
       window.URL.revokeObjectURL(url);
   
